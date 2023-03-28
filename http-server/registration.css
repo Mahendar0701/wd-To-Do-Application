@@ -1,0 +1,127 @@
+form {
+    font-size: 18px;
+    width: 450px;
+    margin:10vh auto 0 auto;
+    padding: 20px;
+    background-color: rgb(249, 250, 251);
+    border-radius: 3px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+h1{
+    text-align: center;
+}
+
+label, input[type="submit"] {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.checkalign{
+    display: flex;
+    flex-direction: row;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+input[type="checkbox"]{
+    padding: 10px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    margin-bottom: auto;
+}
+
+button[type="submit"] {
+    background-color: rgb(27, 142, 204);
+    border-color:black;
+    cursor: pointer;
+    color: whitesmoke;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+button[type="submit"]:hover {
+    background-color: rgb(175, 214, 234);
+}
+
+input#name:invalid:focus{
+    border:1px solid red;
+} 
+
+input#email:invalid:focus{
+    border:1px solid red;
+}
+
+.error {
+    color: red;
+    margin-bottom: 10px;
+}
+
+.Display{
+    display: grid;
+}
+
+.mx-auto {
+    width: 1000px;
+    margin-top: 35px;
+    margin-bottom: 35px;
+    padding-top: 25px;
+    text-align: center;
+    margin-right: auto!important;
+    margin-left: auto!important;
+    /* background-color: rgb(180, 91, 91); */
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 10px;
+    
+}
+
+.align {
+    text-align: -webkit-center;
+    padding: 30px;
+    max-height: 50vh;
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+   
+    
+}
+
+.align table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 15px;
+    
+  }
+
+.container{
+    display: flex;
+    justify-content: center;
+    margin: 90px;
+    margin-left: 500px;
+    width: 500px;
+    border: 2px;
+    border-radius: 2px;
+    border-color: black;
+    max-width: 100vb;
+}
+
+.form{
+    padding-top: 20px;
+}
+
+button {
+    display: -webkit-box;
+}
