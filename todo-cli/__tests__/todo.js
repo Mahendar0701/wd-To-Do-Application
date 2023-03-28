@@ -31,20 +31,20 @@ describe("Todolist Test Suite", () => {
     const overdueItems = all.filter(
       (item) => item.dueDate < new Date().toISOString().slice(0, 10)
     );
-    expect(overdue().length).toBe(overdueItems.length);
+    expect(overdue()).toEqual(overdueItems);
   });
 
   test("Should retrieve today items", () => {
     const dueTodayItems = all.filter(
       (item) => item.dueDate === new Date().toISOString().slice(0, 10)
     );
-    expect(dueToday().length).toBe(dueTodayItems.length);
+    expect(dueToday()).toEqual(dueTodayItems);
   });
 
   test("Should retrieve due later items", () => {
     const dueLaterItems = all.filter(
       (item) => item.dueDate > new Date().toISOString().slice(0, 10)
     );
-    expect(dueLater().length).toBe(dueLaterItems.length);
+    expect(dueLater()).toEqual(dueLaterItems);
   });
 });

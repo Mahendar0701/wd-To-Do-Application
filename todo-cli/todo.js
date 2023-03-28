@@ -34,7 +34,7 @@ const todoList = () => {
           item.dueDate === new Date().toISOString().slice(0, 10)
             ? ""
             : item.dueDate;
-        return `${isCompleted} ${item.title} ${displayableDate}`;
+        return `${isCompleted} ${item.title.trim()} ${displayableDate.trim()}`;
       })
       .join("\n");
   };
@@ -49,6 +49,10 @@ const todoList = () => {
     toDisplayableList,
   };
 };
+
+// ####################################### #
+// DO NOT CHANGE ANYTHING BELOW THIS LINE. #
+// ####################################### #
 
 // const todos = todoList();
 
@@ -71,7 +75,6 @@ const todoList = () => {
 //   todos.add({ title: 'File taxes', dueDate: tomorrow, completed: false })
 //   todos.add({ title: 'Pay electric bill', dueDate: tomorrow, completed: false })
 
-//   // console.log(todos.overdue)
 
 //   console.log("My Todo-list\n")
 
