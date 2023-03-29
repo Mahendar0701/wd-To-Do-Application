@@ -51,6 +51,8 @@ describe("Todolist Test Suite", () => {
     });
     const overdueItems = overdue();
     expect(overdueItems.length).toBe(overdueItemsCount + 1);
+    expect(overdueItems[0].dueDate).toEqual(yesterday);
+    expect(overdueItems[0].title).toEqual("Test overDue");
   });
 
   test("Should retrieve today items", () => {
@@ -66,6 +68,10 @@ describe("Todolist Test Suite", () => {
     });
     const dueTodayItems = dueToday();
     expect(dueTodayItems.length).toBe(dueTodayItemsCount + 1);
+    expect(dueTodayItems[0].dueDate).toEqual(today);
+    expect(dueTodayItems[0].title).toEqual("Test todo");
+    expect(dueTodayItems[2].dueDate).toEqual(today);
+    expect(dueTodayItems[2].title).toEqual("Test dueToday");
   });
 
   test("Should retrieve due later items", () => {
@@ -82,5 +88,7 @@ describe("Todolist Test Suite", () => {
     });
     const dueLaterItems = dueLater();
     expect(dueLaterItems.length).toBe(dueLaterItemsCount + 1);
+    expect(dueLaterItems[0].dueDate).toEqual(tomorrow);
+    expect(dueLaterItems[0].title).toEqual("Test dueLater");
   });
 });
