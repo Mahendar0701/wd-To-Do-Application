@@ -2,18 +2,18 @@
 const todoList = require("../todo");
 
 const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
-const formattedDate = d => {
-  return d.toISOString().slice(0, 10)
-}
+const formattedDate = (d) => {
+  return d.toISOString().slice(0, 10);
+};
 
-var dateToday = new Date()
-const today = formattedDate(dateToday)
+var dateToday = new Date();
+const today = formattedDate(dateToday);
 const yesterday = formattedDate(
   new Date(new Date().setDate(dateToday.getDate() - 1))
-)
+);
 const tomorrow = formattedDate(
   new Date(new Date().setDate(dateToday.getDate() + 1))
-)
+);
 
 describe("Todolist Test Suite", () => {
   beforeAll(() => {
@@ -82,5 +82,5 @@ describe("Todolist Test Suite", () => {
     });
     const dueLaterItems = dueLater();
     expect(dueLaterItems.length).toBe(dueLaterItemsCount + 1);
-  })
+  });
 });
