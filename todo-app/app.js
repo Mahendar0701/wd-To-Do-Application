@@ -12,20 +12,20 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
 const todos = [
-  { id: 1, title: "Buy groceries" },
-  { id: 2, title: "Do laundry" },
-  { id: 3, title: "Clean room" },
+  { id: 1, title: "Buy clothes" },
+  { id: 2, title: "visit school" },
+  { id: 3, title: "Clean garden" },
 ];
 
 app.get("/", async function (request, response) {
   const allTodos = await Todo.getTodos();
   if (request.accepts("html")) {
     response.render("index", {
-      allTodos,
+      todos,
     });
   } else {
     response.json({
-      allTodos,
+      todos,
     });
   }
 });
