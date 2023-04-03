@@ -16,6 +16,17 @@ app.use(express.static(path.join(__dirname, "public")));
 //   { id: 2, title: "visit school" },
 //   { id: 3, title: "Clean garden" },
 // ];
+app.get("/", async (request, response) => {
+  const overDueItems = await Todo.overdue();
+  const dueTodayItems = await Todo.dueToday();
+  const dueLaterItems = await Todo.dueLater();
+  response.render("index", {
+    title: "Todo application",
+    overDueItems,
+    dueTodayItems,
+    dueLaterItems,
+  });
+});
 
 app.get("/", async function (request, response) {
   const allTodos = await Todo.getTodos();
