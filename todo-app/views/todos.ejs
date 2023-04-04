@@ -10,16 +10,21 @@
     <% for(var i=0; i< overDueItems.length; i++) { %>
     <li class="Todo-Item">
       <div class="flex items-center w-fit my-2 px-2 py-1 hover:bg-gray-100">
-        <input
-          type="checkbox"
-          name=""
-          id="todo-checkbox-1"
-          class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
-        />
-        <label class="ml-2 text-sm text-gray-600 cursor-pointer">
-          <%= overDueItems[i].title %>
+        <input type="checkbox" name="" id="todo-checkbox-<%= overDueItems[i].id
+        %>" <%= overDueItems[i].completed ? "checked" : "" %>
+        onclick="updateTodo(<%= overDueItems[i].id %>)" class="w-4 h-4
+        text-blue-600 bg-gray-100 rounded border-gray-300" >
+        <label
+          for="todo-checkbox-<%= overDueItems[i].id %>"
+          class="ml-2 text-sm text-gray-600 cursor-pointer"
+        >
+          (id) <%= overDueItems[i].id %> <%= overDueItems[i].title %>
         </label>
-        <a href="#" class="ml-2 hidden trash-icon ml-2">
+        <a
+          href="#"
+          class="ml-2 hidden trash-icon ml-2"
+          onclick="deleteTodo(<%= overDueItems[i].id %>)"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -51,16 +56,21 @@
     <% for(var i=0; i< dueTodayItems.length; i++) { %>
     <li class="Todo-Item">
       <div class="flex items-center w-fit my-2 px-2 py-1 hover:bg-gray-100">
-        <input
-          type="checkbox"
-          name=""
-          id="todo-checkbox-2"
-          class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
-        />
-        <label class="ml-2 text-sm text-gray-600 cursor-pointer">
-          <%= dueTodayItems[i].title %>
+        <input type="checkbox" name="" id="todo-checkbox-<%= dueTodayItems[i].id
+        %>" <%= dueTodayItems[i].completed ? "checked" : "" %>
+        onclick="updateTodo(<%= dueTodayItems[i].id %>)" class="w-4 h-4
+        text-blue-600 bg-gray-100 rounded border-gray-300" >
+        <label
+          for="todo-checkbox-<%= dueTodayItems[i].id %>"
+          class="ml-2 text-sm text-gray-600 cursor-pointer"
+        >
+          (id) <%= dueTodayItems[i].id %> <%= dueTodayItems[i].title %>
         </label>
-        <a href="#" class="ml-2 hidden trash-icon ml-2">
+        <a
+          href="#"
+          class="ml-2 hidden trash-icon ml-2"
+          onclick="deleteTodo(<%= dueTodayItems[i].id %>)"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -92,16 +102,21 @@
     <% for(var i=0; i< dueLaterItems.length; i++) { %>
     <li class="Todo-Item">
       <div class="flex items-center w-fit my-2 px-2 py-1 hover:bg-gray-100">
-        <input
-          type="checkbox"
-          name=""
-          id="todo-checkbox-3"
-          class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300"
-        />
-        <label class="ml-2 text-sm text-gray-600 cursor-pointer">
-          <%= dueLaterItems[i].title %>
+        <input type="checkbox" name="" id="todo-checkbox-<%= dueLaterItems[i].id
+        %>" <%= dueLaterItems[i].completed ? "checked" : "" %>
+        onclick="updateTodo(<%= dueLaterItems[i].id %>)" class="w-4 h-4
+        text-blue-600 bg-gray-100 rounded border-gray-300" >
+        <label
+          for="todo-checkbox-<%= dueLaterItems[i].id %>"
+          class="ml-2 text-sm text-gray-600 cursor-pointer"
+        >
+          ( id: <%= dueLaterItems[i].id %>) <%= dueLaterItems[i].title %>
         </label>
-        <a href="#" class="ml-2 hidden trash-icon ml-2">
+        <a
+          href="#"
+          class="ml-2 hidden trash-icon ml-2"
+          onclick="deleteTodo(<%= dueLaterItems[i].id %>)"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

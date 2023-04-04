@@ -16,12 +16,20 @@ app.get("/", async (request, response) => {
   const overDueItems = await Todo.overdue();
   const dueTodayItems = await Todo.dueToday();
   const dueLaterItems = await Todo.dueLater();
-  response.render("index", {
-    title: "Todo application",
-    overDueItems,
-    dueTodayItems,
-    dueLaterItems,
-  });
+  if (request.accepts("html")) {
+    response.render("index", {
+      title: "Todo application",
+      overDueItems,
+      dueTodayItems,
+      dueLaterItems,
+    });
+  } else {
+    response.json({
+      overDueItems,
+      dueTodayItems,
+      dueLaterItems,
+    });
+  }
 });
 
 app.get("/", async function (request, response) {
@@ -90,20 +98,27 @@ app.put("/todos/:id/markAsCompleted", async function (request, response) {
 });
 
 app.delete("/todos/:id", async function (request, response) {
-  console.log("We have to delete a Todo with ID: ", request.params.id);
+  console.log("Delete a Todo with ID: ", request.params.id);
   // FILL IN YOUR CODE HERE
   try {
-    const todo = await Todo.findByPk(request.params.id);
-    if (todo) {
-      const deletedTodo = await todo.deleteTodo();
-      return response.json(true);
-    } else {
-      return response.json(false);
-    }
+    await Todo.remove(request.params.id);
+    return response.json({ success: true });
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
   }
+  // try {
+  //   const todo = await Todo.findByPk(request.params.id);
+  //   if (todo) {
+  //     const deletedTodo = await todo.deleteTodo();
+  //     return response.json(true);
+  //   } else {
+  //     return response.json(false);
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  //   return response.status(422).json(error);
+  // }
 
   // First, we have to query our database to delete a Todo by ID.
   // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
