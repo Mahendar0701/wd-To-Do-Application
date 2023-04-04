@@ -5,17 +5,13 @@ const { Todo } = require("./models");
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 const path = require("path");
+app.use(express.urlencoded({ extended: false }));
 
 // Set EJS as view engine
 app.set("view engine", "ejs");
 // eslint-disable-next-line no-undef
 app.use(express.static(path.join(__dirname, "public")));
 
-// const todos = [
-//   { id: 1, title: "Buy clothes" },
-//   { id: 2, title: "visit school" },
-//   { id: 3, title: "Clean garden" },
-// ];
 app.get("/", async (request, response) => {
   const overDueItems = await Todo.overdue();
   const dueTodayItems = await Todo.dueToday();
@@ -75,7 +71,7 @@ app.post("/todos", async function (request, response) {
       dueDate: request.body.dueDate,
       completed: false,
     });
-    return response.json(todo);
+    return response.redirect("/");
   } catch (error) {
     console.log(error);
     return response.status(422).json(error);
