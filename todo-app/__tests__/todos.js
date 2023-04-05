@@ -58,7 +58,7 @@ describe("Todo Application", function () {
     csrfToken = extractCsrfToken(res);
 
     const markCompleteResponse = await agent
-      .put(`/todos/${latestTodo.id}/markASCompleted`)
+      .put(`/todos/${latestTodo.id}`)
       .send({
         _csrf: csrfToken,
       });
@@ -66,59 +66,51 @@ describe("Todo Application", function () {
     expect(parsedUpdateResponse.completed).toBe(true);
   });
 
-  // test("Fetches all todos in the database using /todos endpoint", async () => {
-  //   await agent.post("/todos").send({
-  //     title: "Buy xbox",
-  //     dueDate: new Date().toISOString(),
-  //     completed: false,
-  //   });
-  //   await agent.post("/todos").send({
-  //     title: "Buy ps3",
-  //     dueDate: new Date().toISOString(),
-  //     completed: false,
-  //   });
-  //   const response = await agent.get("/todos");
-  //   const parsedResponse = JSON.parse(response.text);
+  test("Deletes a todo with the given ID if it exists and sends a boolean response", async () => {
+    // FILL IN YOUR CODE HERE
+    let res = await agent.get("/");
+    let csrfToken = extractCsrfToken(res);
+    await agent.post("/todos").send({
+      title: "Go to market",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
+    });
 
-  //   expect(parsedResponse.length).toBe(3);
-  //   // expect(parsedResponse[3]["title"]).toBe("Buy ps3");
-  // });
+    const groupedTodosResponse = await agent
+      .get("/")
+      .set("Accept", "application/json");
+    const parsedGroupedResponse = JSON.parse(groupedTodosResponse.text);
+    const dueTodayCount = parsedGroupedResponse.dueTodayItems.length;
+    const latestTodo = parsedGroupedResponse.dueTodayItems[dueTodayCount - 1];
 
-  // test("Deletes a todo with the given ID if it exists and sends a boolean response", async () => {
-  //   // FILL IN YOUR CODE HERE
-  //   const todo = await agent.post("/todos").send({
-  //     title: "Test todo",
-  //     dueDate: new Date().toISOString(),
-  //     completed: false,
-  //   });
-  //   const parsedResponse = JSON.parse(todo.text);
-  //   const todoID = parsedResponse.id;
+    res = await agent.get("/");
+    csrfToken = extractCsrfToken(res);
 
-  //   const deleteResponse = await agent.delete(`/todos/${todoID}`).send();
-  //   const parsedDeletedResponse = JSON.parse(deleteResponse.text);
-  //   expect(parsedDeletedResponse).toBe(true);
-
-  //   const deleteNonExistentTodoResponse = await agent
-  //     .delete(`/todos/9999`)
-  //     .send();
-  //   const parsedDeleteNonExistentTodoResponse = JSON.parse(
-  //     deleteNonExistentTodoResponse.text
-  //   );
-  //   expect(parsedDeleteNonExistentTodoResponse).toBe(false);
-  // }, 10000);
-  //     const response = await agent.post("/todos").send({
-  //         title: "todo Test",
-  //         dueDate: new Date().toISOString(),
-  //         completed: false,
-  //     });
-  //     const parsedResponse = JSON.parse(response.text);
-  //     const todoID = parsedResponse.id;
-
-  //     const deleteResponse = await agent.delete(`/todos/${todoID}`).send();
-  //     expect(deleteResponse.statusCode).toBe(200);
-  //     expect(deleteResponse.text).toBe("true");
-
-  //     const getResponse = await agent.get(`/todos/${todoID}`).send();
-  //     expect(getResponse.statusCode).toBe(404);
-  // });
+    const deleteTodoResponse = await agent
+      .delete(`/todos/${latestTodo.id}`)
+      .send({
+        _csrf: csrfToken,
+      });
+    const parsedUpdateResponse = JSON.parse(deleteTodoResponse.text);
+    expect(parsedUpdateResponse.success).toBe(true);
+  });
 });
+
+// test("Fetches all todos in the database using /todos endpoint", async () => {
+//   await agent.post("/todos").send({
+//     title: "Buy xbox",
+//     dueDate: new Date().toISOString(),
+//     completed: false,
+//   });
+//   await agent.post("/todos").send({
+//     title: "Buy ps3",
+//     dueDate: new Date().toISOString(),
+//     completed: false,
+//   });
+//   const response = await agent.get("/todos");
+//   const parsedResponse = JSON.parse(response.text);
+
+//   expect(parsedResponse.length).toBe(3);
+//   // expect(parsedResponse[3]["title"]).toBe("Buy ps3");
+// });

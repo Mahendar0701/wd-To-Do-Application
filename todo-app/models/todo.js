@@ -21,12 +21,20 @@ module.exports = (sequelize, DataTypes) => {
       return this.findAll();
     }
 
-    markAsCompleted() {
-      return this.update({ completed: true });
+    setCompletionStatus(complete) {
+      return this.update({ completed: !complete });
     }
 
     deleteTodo() {
       return this.destroy();
+    }
+
+    static completedItems() {
+      return Todo.findAll({
+        where: {
+          completed: true,
+        },
+      });
     }
 
     static async overdue() {
