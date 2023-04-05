@@ -1,11 +1,15 @@
 /* eslint-disable no-unused-vars */
 const express = require("express");
+var csrf = require("csurf");
 const app = express();
 const { Todo } = require("./models");
 const bodyParser = require("body-parser");
+var cookieParser = require("cookie-parser");
 app.use(bodyParser.json());
 const path = require("path");
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser("sshh! some secret string"));
+app.use(csrf({ cookie: true }));
 
 // Set EJS as view engine
 app.set("view engine", "ejs");
@@ -22,6 +26,7 @@ app.get("/", async (request, response) => {
       overDueItems,
       dueTodayItems,
       dueLaterItems,
+      csrfToken: request.csrfToken(),
     });
   } else {
     response.json({
