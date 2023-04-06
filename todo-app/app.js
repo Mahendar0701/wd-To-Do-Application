@@ -37,19 +37,7 @@ app.get("/", async (request, response) => {
       overDueItems,
       dueTodayItems,
       dueLaterItems,
-      allTodos,
-    });
-  }
-});
-
-app.get("/", async function (request, response) {
-  const allTodos = await Todo.getTodos();
-  if (request.accepts("html")) {
-    response.render("index", {
-      allTodos,
-    });
-  } else {
-    response.json({
+      completedItems,
       allTodos,
     });
   }
@@ -101,7 +89,7 @@ app.post("/todos", async function (request, response) {
 app.put("/todos/:id", async function (request, response) {
   const todo = await Todo.findByPk(request.params.id);
   try {
-    const updatedTodo = await todo.setCompletionStatus(todo.completed);
+    const updatedTodo = await todo.setCompletionStatus(request.body.completed);
     return response.json(updatedTodo);
   } catch (error) {
     console.log(error);
@@ -119,22 +107,6 @@ app.delete("/todos/:id", async function (request, response) {
     console.log(error);
     return response.status(422).json(error);
   }
-  // try {
-  //   const todo = await Todo.findByPk(request.params.id);
-  //   if (todo) {
-  //     const deletedTodo = await todo.deleteTodo();
-  //     return response.json(true);
-  //   } else {
-  //     return response.json(false);
-  //   }
-  // } catch (error) {
-  //   console.log(error);
-  //   return response.status(422).json(error);
-  // }
-
-  // First, we have to query our database to delete a Todo by ID.
-  // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
-  // response.send(true)
 });
 
 module.exports = app;
