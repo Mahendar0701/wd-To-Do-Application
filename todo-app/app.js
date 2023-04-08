@@ -71,13 +71,15 @@ app.get("/todos/:id", async function (request, response) {
 
 //Creating a new Todo
 app.post("/todos", async function (request, response) {
-  console.log("Creating a todo", request.body);
+  // console.log("Creating a todo", request.body);
+  // try {
+  //   const todo = await Todo.addTodo({
+  //     title: request.body.title,
+  //     dueDate: request.body.dueDate,
+  //     completed: false,
   try {
-    const todo = await Todo.addTodo({
-      title: request.body.title,
-      dueDate: request.body.dueDate,
-      completed: false,
-    });
+    console.log(request.body.title);
+    const todo = await Todo.addTodo(request.body);
     return response.redirect("/");
   } catch (error) {
     console.log(error);
