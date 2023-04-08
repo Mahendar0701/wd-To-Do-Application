@@ -41,7 +41,7 @@ describe("Todo Application", function () {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Buy milk",
+      title: "Buy book",
       dueDate: new Date().toISOString(),
       completed: false,
       _csrf: csrfToken,
@@ -71,7 +71,7 @@ describe("Todo Application", function () {
     let res = await agent.get("/");
     let csrfToken = extractCsrfToken(res);
     await agent.post("/todos").send({
-      title: "Buy milk",
+      title: "Buy bike",
       dueDate: new Date().toISOString(),
       completed: true,
       _csrf: csrfToken,
@@ -95,6 +95,26 @@ describe("Todo Application", function () {
       });
     const parsedUpdateResponse = JSON.parse(markIncompleteResponse.text);
     expect(parsedUpdateResponse.completed).toBe(false);
+  });
+
+  test("Fetches all todos in the database using /todos endpoint", async () => {
+    // FILL IN YOUR CODE HERE
+    let res = await agent.get("/");
+    let csrfToken = extractCsrfToken(res);
+    await agent.post("/todos").send({
+      title: "Buy car",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
+    });
+
+    const groupedTodosResponse = await agent
+      .get("/")
+      .set("Accept", "application/json");
+
+    const parsedResponse = JSON.parse(groupedTodosResponse.text);
+
+    expect(parsedResponse.allTodos[3].title).toBe("Buy car");
   });
 
   test("Deletes a todo with the given ID if it exists and sends a boolean response", async () => {
@@ -127,21 +147,3 @@ describe("Todo Application", function () {
     expect(parsedUpdateResponse.success).toBe(true);
   });
 });
-
-// test("Fetches all todos in the database using /todos endpoint", async () => {
-//   await agent.post("/todos").send({
-//     title: "Buy xbox",
-//     dueDate: new Date().toISOString(),
-//     completed: false,
-//   });
-//   await agent.post("/todos").send({
-//     title: "Buy ps3",
-//     dueDate: new Date().toISOString(),
-//     completed: false,
-//   });
-//   const response = await agent.get("/todos");
-//   const parsedResponse = JSON.parse(response.text);
-
-//   expect(parsedResponse.length).toBe(3);
-//   // expect(parsedResponse[3]["title"]).toBe("Buy ps3");
-// });
