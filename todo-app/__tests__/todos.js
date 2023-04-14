@@ -158,7 +158,7 @@ describe("Todo Application", function () {
     expect(parsedResponse.allTodos[3].title).toBe("Buy car");
   });
 
-  test("Deletes a todo with the given ID if it exists and sends a boolean response", async () => {
+  test("Deletes a todo ", async () => {
     // FILL IN YOUR CODE HERE
     const agent = request.agent(server);
     await login(agent, "user.a@test.com", "12345678");
@@ -188,5 +188,90 @@ describe("Todo Application", function () {
       });
     const parsedUpdateResponse = JSON.parse(deleteTodoResponse.text);
     expect(parsedUpdateResponse.success).toBe(true);
+  });
+
+  test("User A cannot update User B Todos", async () => {
+    let res = await agent.get("/signup");
+    let csrfToken = extractCsrfToken(res);
+    res = await agent.post("/users").send({
+      firstName: "MS",
+      lastName: "Dhoni",
+      email: "chennai@csk.com",
+      password: "champion",
+      _csrf: csrfToken,
+    });
+
+    res = await agent.get("/todos");
+    csrfToken = extractCsrfToken(res);
+    res = await agent.post("/todos").send({
+      title: "Test todo",
+      dueDate: new Date().toISOString(),
+      completed: false,
+      _csrf: csrfToken,
+    });
+    const userA = res.id;
+
+    await agent.get("/signout");
+
+    res = await agent.get("/signup");
+    csrfToken = extractCsrfToken(res);
+    res = await agent.post("/users").send({
+      firstName: "virat",
+      lastName: "kohi",
+      email: "ipltrophy@rcb.com",
+      password: "play",
+      _csrf: csrfToken,
+    });
+
+    res = await agent.get("/todos");
+    csrfToken = extractCsrfToken(res);
+    const parsedResponse = await agent.put(`/todos/${userA}`).send({
+      _csrf: csrfToken,
+      completed: true,
+    });
+    console.log(parsedResponse);
+    expect(parsedResponse.statusCode).toBe(422);
+  });
+
+  test("User A cannot delete User B Todos", async () => {
+    let res = await agent.get("/signup");
+    let csrfToken = extractCsrfToken(res);
+    res = await agent.post("/users").send({
+      firstName: "MS",
+      lastName: "Dhoni",
+      email: "chennai@csk.com",
+      password: "champion",
+      _csrf: csrfToken,
+    });
+
+    res = await agent.get("/todos");
+    csrfToken = extractCsrfToken(res);
+    res = await agent.post("/users").send({
+      firstName: "virat",
+      lastName: "kohi",
+      email: "ipltrophy@rcb.com",
+      password: "play",
+      _csrf: csrfToken,
+    });
+    const userA = res.id;
+
+    await agent.get("/signout");
+
+    res = await agent.get("/signup");
+    csrfToken = extractCsrfToken(res);
+    res = await agent.post("/users").send({
+      firstName: "User",
+      lastName: "B",
+      email: "user.b@test.com",
+      password: "userb",
+      _csrf: csrfToken,
+    });
+
+    res = await agent.get("/todos");
+    csrfToken = extractCsrfToken(res);
+    const parsedResponse = await agent.delete(`/todos/${userA}`).send({
+      _csrf: csrfToken,
+    });
+    expect(parsedResponse.statusCode).toBe(422);
   });
 });

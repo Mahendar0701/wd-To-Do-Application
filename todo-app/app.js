@@ -85,13 +85,13 @@ passport.deserializeUser((id, done) => {
 
 app.get("/", async function (request, response) {
   try {
-    if (request.accepts("html")) {
+    if (request.user) {
+      return response.redirect("/todos");
+    } else {
       response.render("index", {
         title: "Todo application",
         csrfToken: request.csrfToken(),
       });
-    } else {
-      response.json({});
     }
   } catch (error) {
     console.log(error);
@@ -103,7 +103,6 @@ app.get(
   "/todos",
   connectEnsureLogin.ensureLoggedIn(),
   async (request, response) => {
-    // console.log(request.user)
     try {
       const loggedInUser = request.user.id;
       const overDueItems = await Todo.overdue(loggedInUser);
@@ -113,7 +112,8 @@ app.get(
       const allTodos = await Todo.getTodos();
       if (request.accepts("html")) {
         response.render("todos", {
-          title: "Todo application",
+          loggedInUser: request.user,
+          title: "Todo Application",
           overDueItems,
           dueTodayItems,
           dueLaterItems,
@@ -138,6 +138,9 @@ app.get(
 );
 
 app.get("/signup", (request, response) => {
+  if (request.isAuthenticated()) {
+    return response.redirect("/todos");
+  }
   response.render("signup", {
     title: "Signup",
     csrfToken: request.csrfToken(),
@@ -145,6 +148,14 @@ app.get("/signup", (request, response) => {
 });
 
 app.post("/users", async (request, response) => {
+  if (
+    request.body.firstName.length != 0 &&
+    request.body.email.length != 0 &&
+    request.body.password.length == 0
+  ) {
+    request.flash("error", "Password can not be Empty");
+    return response.redirect("/signup");
+  }
   const hashedPwd = await bcrypt.hash(request.body.password, saltRounds);
   console.log(hashedPwd);
   try {
@@ -158,10 +169,12 @@ app.post("/users", async (request, response) => {
       if (err) {
         console.log(err);
       }
+
       response.redirect("/todos");
     });
   } catch (error) {
     console.log(error);
+
     if (error.name == "SequelizeValidationError") {
       const errMsg = error.errors.map((error) => error.message);
       console.log(errMsg);
@@ -191,6 +204,9 @@ app.post("/users", async (request, response) => {
 });
 
 app.get("/login", (request, response) => {
+  if (request.isAuthenticated()) {
+    return response.redirect("/todos");
+  }
   response.render("login", { title: "Login", csrfToken: request.csrfToken() });
 });
 
@@ -200,7 +216,7 @@ app.post(
     failureRedirect: "/login",
     failureFlash: true,
   }),
-  (request, response) => {
+  async (request, response) => {
     console.log(request.user);
     response.redirect("/todos");
   }
@@ -214,6 +230,33 @@ app.get("/signout", (request, response, next) => {
     response.redirect("/");
   });
 });
+
+app.get("/homepage", (request, response, next) => {
+  request.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    response.redirect("/");
+  });
+});
+
+// app.get("/Login", (request, response, next) => {
+//   request.logout((err) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     response.redirect("/login");
+//   });
+// });
+
+// app.get("/Signup", (request, response, next) => {
+//   request.logout((err) => {
+//     if (err) {
+//       return next(err);
+//     }
+//     response.redirect("/signup");
+//   });
+// });
 
 app.get("/todos", async function (_request, response) {
   console.log("Processing list of all Todos");
@@ -277,8 +320,8 @@ app.put(
   "/todos/:id",
   connectEnsureLogin.ensureLoggedIn(),
   async function (request, response) {
-    const todo = await Todo.findByPk(request.params.id);
     try {
+      const todo = await Todo.findByPk(request.params.id);
       const updatedTodo = await todo.setCompletionStatus(
         request.body.completed
       );
