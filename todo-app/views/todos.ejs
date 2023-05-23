@@ -49,13 +49,16 @@
   <body>
     <div class="grid grid-cols-6">
       <div class="col-start-3 col-span-2">
-        <%- include('header') %>
-        <%= loggedInUser.firstName %>
-                    <%= loggedInUser.lastName %><br>
+        <%- include('header') %> 
+        <div class="py-1.5">
+          <%= loggedInUser.firstName %>
+                    <%= loggedInUser.lastName %>
+        </div>
+         
                         <div>
-                            <a class="bg-blue-600 text-white px-3 py-0 rounded font-medium mr-2 mb" href="/homepage">Home</a>
-                        </div>
-                        <div><a class="bg-red-600 text-white px-3 py-0 rounded font-medium mr-2 mb mt-5" href="/signout">Signout</a></div>
+                            <a class="bg-blue-600 text-white px-3 py-1.5 rounded font-medium mr-2 mb" href="/homepage">Home</a>
+                        </div> <br>
+                        <div><a class="bg-red-600 text-white px-3 py-1.5 rounded font-medium mr-2 mb mt-5" href="/signout">Signout</a></div>
       
         <form action="/todos" method="post">
           <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
