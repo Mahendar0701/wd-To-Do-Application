@@ -57,8 +57,9 @@ jobs:
     steps:
       - name: Deploy to Render
         run: |
-          # Install Render CLI
-          curl -L https://render.com/unix/install.sh | sh
+          curl -sSL https://render.com/install.sh > render-install.sh
+          sh render-install.sh
+          rm render-install.sh
 
           # Log in to Render using secrets for Render account credentials
           render login --email ${{ secrets.RENDER_EMAIL }} --password ${{ secrets.RENDER_PASSWORD }}
