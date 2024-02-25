@@ -55,6 +55,9 @@ jobs:
     needs: run-tests
 
     steps:
+      - name: Navigate to the root directory
+        run: cd todo-app
+
       - name: Deploy to Render
         run: |
           curl -sSL https://render.com/install.sh > render-install.sh
