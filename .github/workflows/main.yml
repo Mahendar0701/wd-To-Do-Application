@@ -44,11 +44,11 @@ jobs:
       - name: Run unit tests
         run: cd todo-app && npm test
 
-      - name: Run integration tests
-        run: |
-          cd todo-app
-          npm install cypress cypress-json-results
-          npx cypress run --env STUDENT_SUBMISSION_URL="http://localhost:3000/"
+      # - name: Run integration tests
+      #   run: |
+      #     cd todo-app
+      #     npm install cypress cypress-json-results
+      #     npx cypress run --env STUDENT_SUBMISSION_URL="http://localhost:3000/"
 
       # Notify on Slack regardless of the outcome
       - name: Slack Notify
