@@ -76,8 +76,8 @@ jobs:
           PORT=3000 npm start &
           sleep 5
 
-  # Deploy to Render
-  deploy-to-render:
+  # Deploy to production
+  deploy-to-production:
     runs-on: ubuntu-latest
     needs: run-tests
 
