@@ -4,10 +4,9 @@ services:
   app:
     build:
       context: .
-      target: dev
+      target: production
     image: todo-app:production
-    volumes:
-      - .:/app
+
     ports:
       - 3010:3000
     env_file:
@@ -18,13 +17,13 @@ services:
   db:
     image: postgres:15
     volumes:
-      - pg-prod-data:var/lib/postgresql/data
+      - pg-prod-data:/var/lib/postgresql/data
     env_file:
       - .env
     environment:
-      POSTGRES_USER: $DEV_USERNAME
-      POSTGRES_DB: $DEV_DATABASE
-      POSTGRES_PASSWORD: $DEV_PASSWORD
+      POSTGRES_USER: $PROD_USERNAME
+      POSTGRES_DB: $PROD_DATABASE
+      POSTGRES_PASSWORD: $PROD_PASSWORD
 
 volumes:
-  pg-dev-data:
+  pg-prod-data:

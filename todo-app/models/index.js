@@ -21,6 +21,10 @@
 //   );
 // }
 
+// console.log("Config:", config);
+// console.log("use_env_variable:", config.use_env_variable);
+// console.log("Database URL:", process.env[config.use_env_variable]);
+
 // fs.readdirSync(__dirname)
 //   .filter((file) => {
 //     return (
@@ -48,6 +52,9 @@
 // db.Sequelize = Sequelize;
 
 // module.exports = db;
+
+/* eslint-disable no-undef */
+"use strict";
 
 const fs = require("fs");
 const path = require("path");

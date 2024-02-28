@@ -5,9 +5,9 @@ EXPOSE 3000
 
 FROM base as production
 ENV NODE_ENV=production
-RUN npm install
+RUN npm install -g husky && pm2
 COPY . /app
-CMD node index.js
+CMD pm2 start index.js -i max --log ./logs/app.log
 
 FROM base as dev
 ENV NODE_ENV=development
