@@ -114,7 +114,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/todo
+        run: docker build . --file todo-app/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/todo
 
       - name: Docker Push
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/todo
