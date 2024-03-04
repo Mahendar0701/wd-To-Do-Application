@@ -98,6 +98,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
+          tags: |
+            mahendar07/todo:latest
 
   # Deploy to production
   deploy-to-production:
